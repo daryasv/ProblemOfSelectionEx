@@ -12,6 +12,7 @@ class Person
 	string name;
 
 public:
+	Person();
 	Person(int id, string name);
 	int getId() { return id; }
 	string getNam() { return name; }
