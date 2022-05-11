@@ -1,4 +1,3 @@
-#pragma once
 #ifndef PERSON_H
 #define PERSON_H
 
@@ -13,7 +12,7 @@ class Person
 
 public:
 	Person();
-	Person(int id, string name);
+	Person(int newId, string newName);
 	int getId() { return id; }
 	string getNam() { return name; }
 };

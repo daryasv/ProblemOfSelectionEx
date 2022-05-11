@@ -7,10 +7,10 @@ Person::Person()
 	id = 0;
 	name = "";
 }
-Person::Person(int id, string name)
+Person::Person(int newId, string newName)
 {
-	id = id;
-	name = name;
+	id = newId;
+	name = newName;
 }
 
 
