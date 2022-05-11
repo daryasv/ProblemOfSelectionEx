@@ -1,7 +1,11 @@
 #pragma once
 #include "Person.h"
 #include "BinarySearchTree.h"
+#include <string>
+#include <sstream>
 
+
+Person* getInfo(int& moked);
 //implement using Selection algorithm leaned in the class (page 80)
 const Person& RandSelection(Person[], int n, int k, int& NumComp);
 

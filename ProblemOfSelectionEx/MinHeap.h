@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef MINHEAP_H
 #define MINHEAP_H
 #include "Person.h"
