@@ -1,13 +1,24 @@
 #include "BinarySearchTree.h"
 
-#include "Person.h"
 BSTreeNode::BSTreeNode(Person p, BSTreeNode* Left, BSTreeNode* Right)
 {
 	Data = p;
 	left = Left;
 	right = Right;
 }
-
+BinarySearchTree::~BinarySearchTree()
+{
+	DtorHelper(root);
+}
+void BinarySearchTree::DtorHelper(BSTreeNode* root)
+{
+	if (root)
+	{
+		DtorHelper(root->left);
+		DtorHelper(root->right);
+		delete root;
+	}
+}
 BSTreeNode* BinarySearchTree::Find(int key)
 {
 	BSTreeNode* temp = root;
@@ -25,7 +36,10 @@ BSTreeNode* BinarySearchTree::Find(int key)
 void BinarySearchTree::Insert(Person p)
 {
 	if (Find(p.getId()) != NULL)//check exists
-		;//handle error
+	{
+		cout << "invalid input";
+		exit(1);
+	}//handle error
 	BSTreeNode* temp = root;
 	BSTreeNode* parent = NULL;
 	BSTreeNode* newnode;
@@ -38,7 +52,7 @@ void BinarySearchTree::Insert(Person p)
 		else
 			temp = temp->right;
 	}
-	newnode = new BSTreeNode(p, NULL, NULL);
+	newnode = new BSTreeNode(p);
 	if (parent == NULL)
 		root = newnode;
 	else if (p.getId() < parent->Data.getId())
@@ -46,15 +60,45 @@ void BinarySearchTree::Insert(Person p)
 	else
 		parent->right = newnode;
 }
-void BinarySearchTree::Delete(int id)
+void BinarySearchTree::makeEmpty()
 {
-
+	makeEmptyHelper(root);
+	root = nullptr;
 }
-Person BinarySearchTree::Min()
+void BinarySearchTree::makeEmptyHelper(BSTreeNode* root)
 {
+	if (root == NULL)
+		return;
+	if (root->left != NULL)
+		makeEmptyHelper(root->left);
+	if (root->right != NULL)
+		makeEmptyHelper(root->right);
 
+	if (root->left == NULL && root->right == NULL)
+	{
+		delete root;
+		return;
+	}
 }
-Person BinarySearchTree::Max()
+bool BinarySearchTree::isEmpty()
 {
-
+	return root != nullptr ? false : true;
+}
+BSTreeNode* BinarySearchTree::Min()
+{
+	BSTreeNode* curr = root;
+	while (curr->left != NULL)
+	{
+		curr = curr->left;
+	}
+	return curr;
+}
+BSTreeNode* BinarySearchTree::Max()
+{
+	BSTreeNode* curr = root;
+	while (curr->right != NULL)
+	{
+		curr = curr->right;
+	}
+	return curr;
 }

@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 #include "ProblemOfSelection.h"
-
+/*
 //implement using Selection algorithm leaned in the class (page 80)
 const Person& RandSelection(Person[], int n, int k, int& NumComp)
 {
@@ -18,10 +18,17 @@ const Person& selectHeap(Person[], int n, int k, int& NumComp)
 const Person& BST(Person[], int n, int k, int& NumComp)
 {
     //TODO
-}
+}*/
 
 int main()
 {
+    BinarySearchTree tr;
+    
+
+    tr.Insert(Person(132, "hello"));
+    tr.Insert(Person(145, "hi"));
+    tr.Insert(Person(123, "wazap"));
+    tr.makeEmpty();
     //TODO:
 
     //A) Get input from user : 1. number of persons (Array size)

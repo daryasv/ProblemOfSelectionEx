@@ -21,6 +21,7 @@ public:
 	int Left(int node);
 	int Parent(int node);
 	void Insert(Person p);
+	void Swap(Person& node, Person& min);
 };
 
 #endif

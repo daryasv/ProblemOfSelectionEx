@@ -56,7 +56,7 @@ void MinHeap::FixHeap(int node)
 		FixHeap(min);
 	}
 }
-void Swap(Person node, Person min)
+void MinHeap::Swap(Person& node, Person& min)
 {
 	Person temp = node;
 	node = min;
