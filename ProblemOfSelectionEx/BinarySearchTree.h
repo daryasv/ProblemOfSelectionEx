@@ -26,8 +26,12 @@ public:
 
 	BSTreeNode* Find(int key);
 	void Insert(Person p);
-	//void Delete(int id);
-	BSTreeNode* Min();
+	void Delete(int id);
+	BSTreeNode* DeleteHelp(BSTreeNode* node, int id);
+	//void DeleteHelper(BSTreeNode* parent, BSTreeNode* node);//&numComp
+	BSTreeNode* findParent(BSTreeNode* node, BSTreeNode* parent, int id);
+
+	BSTreeNode* Min(BSTreeNode* node);
 	BSTreeNode* Max();
 
 };

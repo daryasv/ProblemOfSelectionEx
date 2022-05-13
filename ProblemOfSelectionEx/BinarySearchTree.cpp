@@ -84,9 +84,9 @@ bool BinarySearchTree::isEmpty()
 {
 	return root != nullptr ? false : true;
 }
-BSTreeNode* BinarySearchTree::Min()
+BSTreeNode* BinarySearchTree::Min(BSTreeNode *node)
 {
-	BSTreeNode* curr = root;
+	BSTreeNode* curr = node;
 	while (curr->left != NULL)
 	{
 		curr = curr->left;
@@ -102,3 +102,74 @@ BSTreeNode* BinarySearchTree::Max()
 	}
 	return curr;
 }
+void BinarySearchTree::Delete(int id)
+{
+	/*BSTreeNode* father, * node;
+	father = findParent(root,root, id);
+	node = Find(id);
+	DeleteHelper(father, node);*/
+
+
+}
+BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id)
+{
+	if (node == NULL)
+		return node;
+	if (id < node->Data.getId())
+		node->left = DeleteHelp(node->left, id);
+
+	else if (id > node->Data.getId())
+		node->right = DeleteHelp(node->right, id);
+	else// id is where node is
+	{
+		if (node->right == NULL && node->left == NULL)//no children
+		{
+			delete node;//?
+			return NULL;
+		}
+		else if (node->left == NULL) {//with one child
+			BSTreeNode* temp = node->right;
+			delete node;
+			return temp;
+		}
+		else if (root->right == NULL) {
+			BSTreeNode* temp = node->left;
+			delete node;
+			return temp;
+		}
+		//has 2 children
+		BSTreeNode* help = Min(node->right);
+		root->Data = help->Data;
+		root->right = DeleteHelp(root->right, help->Data.getId());
+	}
+	return root;
+
+}
+
+BSTreeNode* BinarySearchTree::findParent(BSTreeNode* node, BSTreeNode* parent, int id)
+{
+	if (node == NULL)
+		return;
+	if (node->Data.getId() == id)
+	{
+		return parent;
+	}
+	else
+	{
+		return findParent(node->left, node, id);
+		return findParent(node->right, node, id);
+	}
+}
+/*void BinarySearchTree::DeleteHelper(BSTreeNode* parent, BSTreeNode* node)
+{
+	if(node == NULL)
+
+	if (node->left == nullptr)
+	{
+
+	}
+	else if (node->right == nullptr)
+	{
+
+	}
+}*/
