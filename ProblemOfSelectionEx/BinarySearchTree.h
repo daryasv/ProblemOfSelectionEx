@@ -15,25 +15,25 @@ public:
 class BinarySearchTree
 {
 	BSTreeNode* root;
+	int size;
 public:
-	BinarySearchTree() : root(nullptr) {}
+	//?????
+	BinarySearchTree() : root(nullptr) { size = 0; }
 	~BinarySearchTree();
 	void DtorHelper(BSTreeNode* root);
+	int getSize() { return size; }
 	void makeEmpty();
 	void makeEmptyHelper(BSTreeNode* root);
 	bool isEmpty();
 	BSTreeNode* getRoot() { return root; }
-
 	BSTreeNode* Find(int key);
 	void Insert(Person p);
 	void Delete(int id);
 	BSTreeNode* DeleteHelp(BSTreeNode* node, int id);
 	//void DeleteHelper(BSTreeNode* parent, BSTreeNode* node);//&numComp
 	BSTreeNode* findParent(BSTreeNode* node, BSTreeNode* parent, int id);
-
 	BSTreeNode* Min(BSTreeNode* node);
 	BSTreeNode* Max();
-
 };
 //functions to add:
 //suck from the book

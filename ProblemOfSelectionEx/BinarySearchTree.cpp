@@ -59,11 +59,14 @@ void BinarySearchTree::Insert(Person p)
 		parent->left = newnode;
 	else
 		parent->right = newnode;
+
+	size++;
 }
 void BinarySearchTree::makeEmpty()
 {
 	makeEmptyHelper(root);
 	root = nullptr;
+	size = 0;
 }
 void BinarySearchTree::makeEmptyHelper(BSTreeNode* root)
 {
@@ -109,7 +112,7 @@ void BinarySearchTree::Delete(int id)
 	node = Find(id);
 	DeleteHelper(father, node);*/
 	DeleteHelp(root, id);
-
+	size--;
 }
 BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id)
 {
