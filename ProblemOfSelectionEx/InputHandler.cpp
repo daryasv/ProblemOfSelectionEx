@@ -4,29 +4,30 @@ void error()
     cout << "input invalid";
     exit(1);
 }
-Person* getInfo(int& moked)
+Person* getInfo(int& moked, int& size)
 {
-    string input_line, name;
+    string input_line, name, last_name, full_name;
     stringstream ss, so;
     bool flag = false;
-    int id, n;
+    int id;
 
     getline(cin, input_line);
     ss << input_line;
-    if (!(ss >> n))
+    if (!(ss >> size))
         flag = true;
-    Person* people = new Person[n];
-    for (int i = 0; i < n; i++)
+    Person* people = new Person[size];
+    for (int i = 0; i < size; i++)
     {
         if (getline(cin, input_line))
         {
             stringstream sn(input_line);
-            if (!(sn >> id >> name))
+            if (!(sn >> id >> name >> last_name))
             {
                 flag = true;
                 break;
             }
-            people[i] = Person(id, name);
+            full_name = name + " " + last_name;
+            people[i] = Person(id, full_name);
         }
         else
             flag = true;
@@ -35,7 +36,7 @@ Person* getInfo(int& moked)
     so << input_line;
     if (so >> moked)
     {
-        if (moked < 1 || moked > n)
+        if (moked < 1 || moked > size)
             flag = true;
     }
     else

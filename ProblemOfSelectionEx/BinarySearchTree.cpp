@@ -108,7 +108,7 @@ void BinarySearchTree::Delete(int id)
 	father = findParent(root,root, id);
 	node = Find(id);
 	DeleteHelper(father, node);*/
-
+	DeleteHelp(root, id);
 
 }
 BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id)
@@ -149,7 +149,7 @@ BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id)
 BSTreeNode* BinarySearchTree::findParent(BSTreeNode* node, BSTreeNode* parent, int id)
 {
 	if (node == NULL)
-		return;
+		return NULL;
 	if (node->Data.getId() == id)
 	{
 		return parent;

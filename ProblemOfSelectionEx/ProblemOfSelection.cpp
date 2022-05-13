@@ -23,7 +23,14 @@ const Person& BST(Person[], int n, int k, int& NumComp)
 
 int main()
 {
-    int moked;
+    int moked, size;
+    Person* people = getInfo(moked, size);
+    BinarySearchTree tr;
+    for (int i = 0; i < size; i++)
+    {
+        tr.Insert(people[i]);
+    }
+    tr.Delete(people[0].getId());
     //TODO:
 
     //A) Get input from user : 1. number of persons (Array size)
