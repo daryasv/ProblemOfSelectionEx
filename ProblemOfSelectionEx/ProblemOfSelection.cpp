@@ -19,59 +19,85 @@ void swapPersons(Person personArr[], int index1, int index2)
 }
 
 
-int partition(int arr[], int low, int high)
+int partition(Person arr[], int left, int right)
 {
     // pivot
-    int pivot = arr[high];
+    int pivot = arr[left].getId();
 
-    // Index of smaller element
-    int i = (low - 1);
+    int pivotIndex = left;
+    int nonPivotIndex = right;
 
-    for (int j = low; j <= high - 1; j++)
-    {
-        // If current element is smaller
-        // than or equal to pivot
-        if (arr[j] <= pivot) {
-
-            // increment index of
-            // smaller element
-            i++;
-            swap(arr[i], arr[j]);
+    while (pivotIndex != nonPivotIndex) {
+        if (pivotIndex < nonPivotIndex) {
+            if (arr[nonPivotIndex].getId() < pivot) {
+                swap(arr[pivotIndex], arr[nonPivotIndex]);
+                swap(pivotIndex, nonPivotIndex);
+                nonPivotIndex++;
+            }
+            else {
+                nonPivotIndex--;
+            }
+        }
+        else {//nonPivotIndex < pivotIndex
+            if (arr[nonPivotIndex].getId() > pivot) {
+                swap(arr[pivotIndex], arr[nonPivotIndex]);
+                swap(pivotIndex, nonPivotIndex);
+                nonPivotIndex--;
+            }
+            else {
+                nonPivotIndex++;
+            }
         }
     }
-    swap(arr[i + 1], arr[high]);
-    return (i + 1);
+    return pivotIndex;
 }
 
 // Generates Random Pivot, swaps pivot with
 // end element and calls the partition function
-int partition_r(int arr[], int low, int high)
+int partition_r(Person arr[], int low, int high)
 {
     // Generate a random number in between
     // low .. high
     //srand(time(NULL));
     int random = low + rand() % (high - low);
 
-    // Swap A[random] with A[high]
-    swap(arr[random], arr[high]);
+    // Swap random to left
+    swap(arr[random], arr[low]);
 
     return partition(arr, low, high);
 }
 
+Person SelectRandom(Person A[], int left, int right, int i) {
+    int pivot;
+    int leftPart;
+
+    pivot = partition_r(A, left, right);
+    leftPart = pivot - left + 1;
+    if (i == leftPart) {
+        return A[pivot];
+    }
+    if (i < leftPart) {
+        return SelectRandom(A, left, pivot - 1, i);
+    }
+    else {
+        return SelectRandom(A, pivot + 1, right, i - leftPart);
+    }
+}
 
 //implement using Selection algorithm leaned in the class (page 80)
 //Select(int A[], int left. int rigth)
 // left = 0 || rigth = n || k = i
 const Person& RandSelection(Person personArr[], int n, int k, int& NumComp)
 {
-    Person person;
-    return person;
+    Person p = SelectRandom(personArr, 0, n-1, k);;
+    return p;
 }
+
+
 
 //implement using MinHeap : insert n items -> deleteMin k times (no need to put back in the heap)
 const Person& selectHeap(Person personArr[], int n, int k, int& NumComp)
 {
-    //TODO: TEST
 
     MinHeap minHeap(personArr, n);
     Person person;
@@ -87,7 +113,6 @@ const Person& selectHeap(Person personArr[], int n, int k, int& NumComp)
 //implement using BinarySearchTree : insert items one by one -> find the K item in it's size
 const Person& BST(Person personArr[], int n, int k, int& NumComp)
 {
-    //TODO: TEST
 
     BinarySearchTree bst;
     for (int i = 0; i < n; i++)
@@ -119,7 +144,8 @@ int main()
     int moked, size;
     Person* people = getInfo(moked, size);
     int counter = 0;
-    selectHeap(people, size, moked, counter);
+    Person p = RandSelection(people, size, moked, counter);
+    //selectHeap(people, size, moked, counter);
     //BST(people, size, moked, counter);
     
     //TODO:
