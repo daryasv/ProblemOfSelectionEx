@@ -10,11 +10,12 @@ Person* getInfo(int& moked, int& size)
     stringstream ss, so;
     bool flag = false;
     int id;
+    char temp;
 
     getline(cin, input_line);
     ss << input_line;
-    if (!(ss >> size))
-        flag = true;
+    if (!(ss >> size) || size < 0 || ss >> temp)
+        error();
     Person* people = new Person[size];
     for (int i = 0; i < size; i++)
     {
@@ -32,6 +33,11 @@ Person* getInfo(int& moked, int& size)
         else
             flag = true;
     }
+    if (flag)//checks throw out after invalid name
+    {
+        delete[] people;
+        error();
+    }
     getline(cin, input_line);
     so << input_line;
     if (so >> moked)
@@ -40,6 +46,8 @@ Person* getInfo(int& moked, int& size)
             flag = true;
     }
     else
+        flag = true;
+    if (so >> temp)
         flag = true;
     if (flag)
     {

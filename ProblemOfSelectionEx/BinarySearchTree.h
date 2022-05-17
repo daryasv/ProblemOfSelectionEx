@@ -27,9 +27,10 @@ public:
 	bool isEmpty();
 	BSTreeNode* getRoot() { return root; }
 	BSTreeNode* Find(int key);
-	void Insert(Person p);
-	void Delete(int id);
-	BSTreeNode* DeleteHelp(BSTreeNode* node, int id);
+	void Insert(Person* p, int& numComp);
+	BSTreeNode* insertHelper(BSTreeNode* node, Person& p, int& numComp);
+	void Delete(int id, int& NumComp);
+	BSTreeNode* DeleteHelp(BSTreeNode* node, int id, int& NumComp);
 	//void DeleteHelper(BSTreeNode* parent, BSTreeNode* node);//&numComp
 	BSTreeNode* findParent(BSTreeNode* node, BSTreeNode* parent, int id);
 	BSTreeNode* Min(BSTreeNode* node);

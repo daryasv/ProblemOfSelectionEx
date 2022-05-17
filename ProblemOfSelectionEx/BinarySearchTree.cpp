@@ -33,7 +33,7 @@ BSTreeNode* BinarySearchTree::Find(int key)
 	}
 	return NULL;//not found
 }
-void BinarySearchTree::Insert(Person p)
+/*void BinarySearchTree::Insert(Person p)
 {
 	if (Find(p.getId()) != NULL)//check exists
 	{
@@ -61,6 +61,27 @@ void BinarySearchTree::Insert(Person p)
 		parent->right = newnode;
 
 	size++;
+}
+*/
+void BinarySearchTree::Insert(Person* p, int& numComp){
+	if (root == nullptr)
+		root = new BSTreeNode(*p);
+	else
+		insertHelper(root, *p, numComp);
+}
+
+BSTreeNode* BinarySearchTree::insertHelper(BSTreeNode* node,Person& p, int& numComp){
+	if (node == nullptr) {
+        return new BSTreeNode(p);
+    }
+	numComp++;
+    if (p.getId() < node->Data.getId()) {
+        node->left = insertHelper(node->left, p,numComp);
+    }
+    else {
+        node->right = insertHelper(node->right, p,numComp);
+    }
+    return node;
 }
 void BinarySearchTree::makeEmpty()
 {
@@ -105,24 +126,25 @@ BSTreeNode* BinarySearchTree::Max()
 	}
 	return curr;
 }
-void BinarySearchTree::Delete(int id)
+void BinarySearchTree::Delete(int id, int& NumComp)
 {
 	/*BSTreeNode* father, * node;
 	father = findParent(root,root, id);
 	node = Find(id);
 	DeleteHelper(father, node);*/
-	DeleteHelp(root, id);
+	DeleteHelp(root, id, NumComp);
 	size--;
 }
-BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id)
+BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id, int& NumComp)
 {
 	if (node == NULL)
 		return node;
+	NumComp++;
 	if (id < node->Data.getId())
-		node->left = DeleteHelp(node->left, id);
+		node->left = DeleteHelp(node->left, id, NumComp);
 
 	else if (id > node->Data.getId())
-		node->right = DeleteHelp(node->right, id);
+		node->right = DeleteHelp(node->right, id, NumComp);
 	else// id is where node is
 	{
 		if (node->right == NULL && node->left == NULL)//no children
@@ -143,7 +165,7 @@ BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id)
 		//has 2 children
 		BSTreeNode* help = Min(node->right);
 		root->Data = help->Data;
-		root->right = DeleteHelp(root->right, help->Data.getId());
+		root->right = DeleteHelp(root->right, help->Data.getId(), NumComp);
 	}
 	return root;
 

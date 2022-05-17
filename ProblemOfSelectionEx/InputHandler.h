@@ -10,6 +10,6 @@
 using namespace std;
 
 void error();
-Person* getInfo(int& moked);
+Person* getInfo(int& moked, int& size);
 
 #endif

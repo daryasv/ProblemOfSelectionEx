@@ -11,7 +11,11 @@ MinHeap::MinHeap(int max)
 MinHeap::MinHeap(Person A[], int size)
 {
 	heapSize = maxSize = size;
-	data = A;
+	data = new Person[size];
+	for (int i = 0; i < size; i++)
+	{
+		data[i] = A[i];
+	}
 	allocated = 0;
 
 	for (int i = size / 2 - 1; i >= 0; i--)

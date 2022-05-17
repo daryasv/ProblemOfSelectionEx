@@ -14,7 +14,7 @@ public:
 	Person();
 	Person(int newId, string newName);
 	int getId() { return id; }
-	string getNam() { return name; }
+	string getName() { return name; }
 };
 
 #endif

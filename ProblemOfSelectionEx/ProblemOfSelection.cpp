@@ -59,7 +59,7 @@ int partition_r(Person arr[], int low, int high)
     // Generate a random number in between
     // low .. high
     //srand(time(NULL));
-    int random = low + rand() % (high - low);
+    int random = low + 537 % (high - low);//rand()
 
     // Swap random to left
     swap(arr[random], arr[low]);
@@ -89,8 +89,16 @@ Person SelectRandom(Person A[], int left, int right, int i) {
 // left = 0 || rigth = n || k = i
 const Person& RandSelection(Person personArr[], int n, int k, int& NumComp)
 {
-    Person p = SelectRandom(personArr, 0, n-1, k);;
-    return p;
+    Person* p = new Person();
+    Person* temp = new Person[n];
+    //copy to new array and send
+    for (int i = 0; i < n; i++)
+    {
+        temp[i] = personArr[i];
+    }
+    *p = SelectRandom(temp, 0, n-1, k);
+    delete[]temp;
+    return *p;
 }
 
 
@@ -100,14 +108,14 @@ const Person& selectHeap(Person personArr[], int n, int k, int& NumComp)
 {
 
     MinHeap minHeap(personArr, n);
-    Person person;
+    Person* person = new Person();
 
     for (int i = 0; i < k; i++)
     {
-        person = minHeap.DeleteMin();
+        *person = minHeap.DeleteMin();
     }
 
-    return person;
+    return *person;
 }
 
 //implement using BinarySearchTree : insert items one by one -> find the K item in it's size
@@ -117,16 +125,16 @@ const Person& BST(Person personArr[], int n, int k, int& NumComp)
     BinarySearchTree bst;
     for (int i = 0; i < n; i++)
     {
-        bst.Insert(personArr[i]);
+        bst.Insert(&personArr[i], NumComp);
     }
     int counter = 0;
-    Person person;
-    inorder(bst.getRoot(), k,&counter,&person);
-
-    return person;
+    Person *person = new Person();
+    inorder(bst.getRoot(), k,&counter,*person);
+    //maybe print person here because person returns badly to main/ send person by ref to this function
+    return *person;// Dtor deletes the node
 }
 
-void inorder(BSTreeNode* node,int k,int* counter,Person* person)
+void inorder(BSTreeNode* node,int k,int* counter,Person& person)
 {
     if (node == NULL) {
         return;
@@ -134,20 +142,25 @@ void inorder(BSTreeNode* node,int k,int* counter,Person* person)
     inorder(node->left,k,counter,person);
     (*counter)++;
     if ((*counter) == k) {
-        (*person) = node->Data;
+        person = node->Data;
+        return;
     }
     inorder(node->right,k,counter,person);
 }
 
 int main()
 {
+    Person p;
     int moked, size;
     Person* people = getInfo(moked, size);
     int counter = 0;
-    Person p = RandSelection(people, size, moked, counter);
-    //selectHeap(people, size, moked, counter);
-    //BST(people, size, moked, counter);
-    
+    p = RandSelection(people, size, moked, counter);
+    cout << "RandSelection: " << p.getId() << " " << p.getName() << " " << counter << "comparisons"<<endl;
+    p = selectHeap(people, size, moked, counter);
+    cout << "selectHeap: " << p.getId() << " " << p.getName() << " " << counter << "comparisons"<<endl;
+    p = BST(people, size, moked, counter);
+    cout << "BST: " << p.getId() << " " << p.getName() << " " << counter << "comparisons"<<endl;
+
     //TODO:
 
     //A) Get input from user : 1. seed number for srand
