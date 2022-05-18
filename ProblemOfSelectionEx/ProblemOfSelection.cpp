@@ -50,10 +50,12 @@ int partitionRandom(Person arr[], int low, int high,int& NumComp)
 {
     // Generate a random number in between
     // low .. high
-    int random = low + rand() % (high - low);
+   if (low != high) {
+        int random = low + rand() % (high - low);
 
-    // Swap random to left
-    swap(arr[random], arr[low]);
+        // Swap random to left
+        swap(arr[random], arr[low]);
+    }
 
     return partition(arr, low, high, NumComp);
 }

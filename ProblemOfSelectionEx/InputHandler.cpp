@@ -1,7 +1,7 @@
 #include "InputHandler.h"
 void error()
 {
-    cout << "input invalid";
+    cout << "invalid input";
     exit(1);
 }
 Person* getInfo(int& moked, int& size,int& seed)
@@ -30,6 +30,14 @@ Person* getInfo(int& moked, int& size,int& seed)
             if (!(sn >> id >> name >> last_name))
             {
                 flag = true;
+            }
+            for(int j=i-1;j>0;j--){
+                if (people[j].getId() == id) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) {
                 break;
             }
             full_name = name + " " + last_name;
