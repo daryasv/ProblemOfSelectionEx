@@ -7,9 +7,11 @@ MinHeap::MinHeap(int max)
 	maxSize = max;
 	heapSize = 0;
 	allocated = 1;
+	NumComp = 0;
 }
 MinHeap::MinHeap(Person A[], int size)
 {
+	NumComp = 0;
 	heapSize = maxSize = size;
 	data = new Person[size];
 	for (int i = 0; i < size; i++)
@@ -47,14 +49,18 @@ void MinHeap::FixHeap(int node)
 	int min;
 	int left = Left(node);
 	int right = Right(node);
-
-	if ((left < heapSize) && (data[left].getId() < data[node].getId()))
+	NumComp++;//For left and heapSize
+	if ((left < heapSize) && (data[left].compareTo(data[node], NumComp) < 0)) {
 		min = left;
-	else
+	}
+	else {
 		min = node;
-	if ((right < heapSize) && (data[right].getId() < data[min].getId()))
+	}
+	NumComp++;//For right and heapSize
+	if ((right < heapSize) && (data[right].compareTo(data[min].getId(), NumComp)) < 0) {
 		min = right;
-
+	}
+	NumComp++;//For min and node
 	if (min != node)
 	{
 		Swap(&data[node], &data[min]);
@@ -70,12 +76,18 @@ void MinHeap::Swap(Person* x, Person* y)
 	*y = temp;
 }
 
+int MinHeap::getNumComp()
+{
+	return this->NumComp;
+}
+
 Person MinHeap::DeleteMin()
 {
 	if (heapSize < 1)
 		return Person();
 	Person min = data[0];
 	heapSize--;
+	NumComp++;
 	if (heapSize == 0) {
 		data = new Person[this->maxSize];
 	}
@@ -88,12 +100,11 @@ Person MinHeap::DeleteMin()
 
 void MinHeap::Insert(Person p)
 {
-	if (heapSize == maxSize)
-		;//handle error
+	if (heapSize == maxSize);//handle error
 	int i = heapSize;
 	heapSize++;
 
-	while ((i > 0) && (data[Parent(i)].getId() > p.getId()))
+	while ((i > 0) && (data[Parent(i)].compareTo(p.getId(), NumComp) > 0))
 	{
 		data[i] = data[Parent(i)];
 		i = Parent(i);

@@ -4,13 +4,18 @@ void error()
     cout << "input invalid";
     exit(1);
 }
-Person* getInfo(int& moked, int& size)
+Person* getInfo(int& moked, int& size,int& seed)
 {
     string input_line, name, last_name, full_name;
-    stringstream ss, so;
+    stringstream ss, so,sd;
     bool flag = false;
     int id;
     char temp;
+
+    getline(cin, input_line);
+    sd << input_line;
+    if (!(sd >> seed) || seed < 0 )
+        error();
 
     getline(cin, input_line);
     ss << input_line;

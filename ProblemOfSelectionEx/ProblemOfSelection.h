@@ -12,9 +12,11 @@ Person* compareId(Person& per1, Person& per2);
 
 void swapPersons(Person personArr[], int index1, int index2);
 
-Person* getInfo(int& moked, int& size);
+Person* getInfo(int& moked, int& size,int& seed);
 
-int partition(Person arr[], int left, int rigth);
+int partition(Person arr[], int left, int rigth, int& NumComp);
+
+int partitionRandom(Person arr[], int low, int high, int& NumComp);
 
 //implement using Selection algorithm leaned in the class (page 80)
 const Person& RandSelection(Person personArr[], int n, int k, int& NumComp);

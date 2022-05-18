@@ -8,6 +8,7 @@ class MinHeap
 	int maxSize;
 	int heapSize;
 	int allocated;
+	int NumComp;
 	void FixHeap(int node);
 public:
 	MinHeap(int max);
@@ -20,6 +21,7 @@ public:
 	int Parent(int node);
 	void Insert(Person p);
 	void Swap(Person* node, Person* min);
+	int getNumComp();
 };
 
 #endif

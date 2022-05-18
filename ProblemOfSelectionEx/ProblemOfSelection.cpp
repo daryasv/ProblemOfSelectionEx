@@ -2,14 +2,6 @@
 using namespace std;
 #include "ProblemOfSelection.h"
 
-//????????
-Person* compareId(Person &per1, Person &per2)
-{
-    if (per1.getId() >= per2.getId())
-        return &per1;
-    else
-        return &per2;
-}
 
 void swapPersons(Person personArr[], int index1, int index2)
 {
@@ -19,17 +11,17 @@ void swapPersons(Person personArr[], int index1, int index2)
 }
 
 
-int partition(Person arr[], int left, int right)
+int partition(Person arr[], int left, int right,int& NumComp)
 {
     // pivot
     int pivot = arr[left].getId();
 
     int pivotIndex = left;
     int nonPivotIndex = right;
-
     while (pivotIndex != nonPivotIndex) {
+        NumComp++;
         if (pivotIndex < nonPivotIndex) {
-            if (arr[nonPivotIndex].getId() < pivot) {
+            if (arr[nonPivotIndex].compareTo(pivot,NumComp) < 0) {
                 swap(arr[pivotIndex], arr[nonPivotIndex]);
                 swap(pivotIndex, nonPivotIndex);
                 nonPivotIndex++;
@@ -39,7 +31,7 @@ int partition(Person arr[], int left, int right)
             }
         }
         else {//nonPivotIndex < pivotIndex
-            if (arr[nonPivotIndex].getId() > pivot) {
+            if (arr[nonPivotIndex].compareTo(pivot,NumComp) > 0) {
                 swap(arr[pivotIndex], arr[nonPivotIndex]);
                 swap(pivotIndex, nonPivotIndex);
                 nonPivotIndex--;
@@ -54,33 +46,33 @@ int partition(Person arr[], int left, int right)
 
 // Generates Random Pivot, swaps pivot with
 // end element and calls the partition function
-int partition_r(Person arr[], int low, int high)
+int partitionRandom(Person arr[], int low, int high,int& NumComp)
 {
     // Generate a random number in between
     // low .. high
-    //srand(time(NULL));
-    int random = low + 537 % (high - low);//rand()
+    int random = low + rand() % (high - low);
 
     // Swap random to left
     swap(arr[random], arr[low]);
 
-    return partition(arr, low, high);
+    return partition(arr, low, high, NumComp);
 }
 
-Person SelectRandom(Person A[], int left, int right, int i) {
+Person SelectRandom(Person A[], int left, int right, int i,int& NumComp) {
     int pivot;
     int leftPart;
 
-    pivot = partition_r(A, left, right);
+    pivot = partitionRandom(A, left, right, NumComp);
     leftPart = pivot - left + 1;
+    NumComp++;
     if (i == leftPart) {
         return A[pivot];
     }
-    if (i < leftPart) {
-        return SelectRandom(A, left, pivot - 1, i);
+    else if (i < leftPart) {
+        return SelectRandom(A, left, pivot - 1, i, NumComp);
     }
     else {
-        return SelectRandom(A, pivot + 1, right, i - leftPart);
+        return SelectRandom(A, pivot + 1, right, i - leftPart, NumComp);
     }
 }
 
@@ -96,7 +88,7 @@ const Person& RandSelection(Person personArr[], int n, int k, int& NumComp)
     {
         temp[i] = personArr[i];
     }
-    *p = SelectRandom(temp, 0, n-1, k);
+    *p = SelectRandom(temp, 0, n-1, k, NumComp);
     delete[]temp;
     return *p;
 }
@@ -114,7 +106,7 @@ const Person& selectHeap(Person personArr[], int n, int k, int& NumComp)
     {
         *person = minHeap.DeleteMin();
     }
-
+    NumComp = minHeap.getNumComp();
     return *person;
 }
 
@@ -125,11 +117,12 @@ const Person& BST(Person personArr[], int n, int k, int& NumComp)
     BinarySearchTree bst;
     for (int i = 0; i < n; i++)
     {
-        bst.Insert(&personArr[i], NumComp);
+        bst.Insert(&personArr[i]);
     }
     int counter = 0;
     Person *person = new Person();
-    bst.findInOrder(k, &counter, *person, NumComp);
+    bst.findInOrder(k, &counter, *person);
+    NumComp = bst.getNumComp();
     //maybe print person here because person returns badly to main/ send person by ref to this function
     return *person;// Dtor deletes the node
 }
@@ -138,9 +131,10 @@ const Person& BST(Person personArr[], int n, int k, int& NumComp)
 int main()
 {
     Person p;
-    int moked, size;
-    Person* people = getInfo(moked, size);
+    int moked, size,seed;
+    Person* people = getInfo(moked, size, seed);
     int counter = 0;
+    srand(seed);
     p = RandSelection(people, size, moked, counter);
     cout << "RandSelection: " << p.getId() << " " << p.getName() << " " << counter << " " << "comparisons" << endl;
     counter = 0;
@@ -149,25 +143,4 @@ int main()
     counter = 0;
     p = BST(people, size, moked, counter);
     cout << "BST: " << p.getId() << " " << p.getName() << " " << counter << " " << "comparisons" << endl;
-
-    //TODO:
-
-    //A) Get input from user : 1. seed number for srand
-    //                         2. number of persons (Array size)
-    //                         3. Array of Persons
-    //                         4. key (k) to search
-    //B) for every input check for errors (less/more persons than entered, person with existing id, key -1 / >size)
-    //   if input check failed print "invalid input" and exit the program with exit(1)
-
-    //C) Find the K item in its size by using every one of the 3 following ways
-    //   the function will return the concurrent Person (function output) + number on comparisons (output parameter)
-    
-    //1. implement using Selection algorithm leaned in the class (page 80)
-    //const Person& RandSelection(Person[], int n, int k, int& NumComp);
-
-    //2. implement using MinHeap : insert n items -> deleteMin k times (no need to put back in the heap)
-    //const Person& selectHeap(Person[], int n, int k, int& NumComp);
-
-    //3. implement using BinarySearchTree : insert items ona by one -> find the K item in its size
-    //const Person& BST(Person[], int n, int k, int& NumComp);
 }
