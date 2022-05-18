@@ -33,36 +33,7 @@ BSTreeNode* BinarySearchTree::Find(int key)
 	}
 	return NULL;//not found
 }
-/*void BinarySearchTree::Insert(Person p)
-{
-	if (Find(p.getId()) != NULL)//check exists
-	{
-		cout << "invalid input";
-		exit(1);
-	}//handle error
-	BSTreeNode* temp = root;
-	BSTreeNode* parent = NULL;
-	BSTreeNode* newnode;
-	
-	while (temp != NULL)
-	{
-		parent = temp;
-		if (p.getId() < (temp->Data.getId()))
-			temp = temp->left;
-		else
-			temp = temp->right;
-	}
-	newnode = new BSTreeNode(p);
-	if (parent == NULL)
-		root = newnode;
-	else if (p.getId() < parent->Data.getId())
-		parent->left = newnode;
-	else
-		parent->right = newnode;
 
-	size++;
-}
-*/
 void BinarySearchTree::Insert(Person* p, int& numComp){
 	if (root == nullptr)
 		root = new BSTreeNode(*p);
@@ -70,19 +41,19 @@ void BinarySearchTree::Insert(Person* p, int& numComp){
 		insertHelper(root, *p, numComp);
 }
 
-BSTreeNode* BinarySearchTree::insertHelper(BSTreeNode* node,Person& p, int& numComp){
+BSTreeNode* BinarySearchTree::insertHelper(BSTreeNode* node, Person& p, int& numComp) {
 	if (node == nullptr) {
-        return new BSTreeNode(p);
-    }
-	numComp++;
-    if (p.getId() < node->Data.getId()) {
-        node->left = insertHelper(node->left, p,numComp);
-    }
-    else {
-        node->right = insertHelper(node->right, p,numComp);
-    }
-    return node;
+		return new BSTreeNode(p);
+	}
+	if (p.compareTo(node->Data, numComp) < 0) {
+		node->left = insertHelper(node->left, p, numComp);
+	}
+	else {
+		node->right = insertHelper(node->right, p, numComp);
+	}
+	return node;
 }
+
 void BinarySearchTree::makeEmpty()
 {
 	makeEmptyHelper(root);
@@ -139,7 +110,7 @@ BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id, int& NumComp)
 {
 	if (node == NULL)
 		return node;
-	NumComp++;
+	(NumComp)++;
 	if (id < node->Data.getId())
 		node->left = DeleteHelp(node->left, id, NumComp);
 
@@ -171,6 +142,29 @@ BSTreeNode* BinarySearchTree::DeleteHelp(BSTreeNode* node, int id, int& NumComp)
 
 }
 
+
+void BinarySearchTree::findInOrder(int k, int* counter, Person& person, int& NumComp)
+{
+	findInOrderRecursive(this->root,k, counter, person, NumComp);
+}
+
+void BinarySearchTree::findInOrderRecursive(BSTreeNode* node, int k, int* counter, Person& person, int& NumComp)
+{
+	NumComp++;
+	if (node == NULL) {
+		return;
+	}
+	findInOrderRecursive(node->left, k, counter, person,NumComp);
+	(*counter)++;
+	NumComp++;
+	if ((*counter) == k) {
+		person = node->Data;
+		return;
+	}
+	findInOrderRecursive(node->right, k, counter, person, NumComp);
+}
+
+
 BSTreeNode* BinarySearchTree::findParent(BSTreeNode* node, BSTreeNode* parent, int id)
 {
 	if (node == NULL)
@@ -181,20 +175,12 @@ BSTreeNode* BinarySearchTree::findParent(BSTreeNode* node, BSTreeNode* parent, i
 	}
 	else
 	{
-		return findParent(node->left, node, id);
-		return findParent(node->right, node, id);
+		BSTreeNode* temp = findParent(node->left, node, id);
+		if (temp == NULL) {
+			return findParent(node->right, node, id);
+		}
+		else {
+			return temp;
+		}
 	}
 }
-/*void BinarySearchTree::DeleteHelper(BSTreeNode* parent, BSTreeNode* node)
-{
-	if(node == NULL)
-
-	if (node->left == nullptr)
-	{
-
-	}
-	else if (node->right == nullptr)
-	{
-
-	}
-}*/

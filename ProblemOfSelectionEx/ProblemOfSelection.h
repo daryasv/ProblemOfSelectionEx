@@ -25,5 +25,4 @@ const Person& selectHeap(Person personArr[], int n, int k, int& NumComp);
 //implement using BinarySearchTree : insert items ona by one -> find the K item in it's size
 const Person& BST(Person personArr[], int n, int k, int& NumComp);
 
-void inorder(BSTreeNode* node, int k, int* counter, Person& person);
 

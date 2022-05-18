@@ -129,24 +129,11 @@ const Person& BST(Person personArr[], int n, int k, int& NumComp)
     }
     int counter = 0;
     Person *person = new Person();
-    inorder(bst.getRoot(), k,&counter,*person);
+    bst.findInOrder(k, &counter, *person, NumComp);
     //maybe print person here because person returns badly to main/ send person by ref to this function
     return *person;// Dtor deletes the node
 }
 
-void inorder(BSTreeNode* node,int k,int* counter,Person& person)
-{
-    if (node == NULL) {
-        return;
-    }
-    inorder(node->left,k,counter,person);
-    (*counter)++;
-    if ((*counter) == k) {
-        person = node->Data;
-        return;
-    }
-    inorder(node->right,k,counter,person);
-}
 
 int main()
 {
@@ -155,11 +142,13 @@ int main()
     Person* people = getInfo(moked, size);
     int counter = 0;
     p = RandSelection(people, size, moked, counter);
-    cout << "RandSelection: " << p.getId() << " " << p.getName() << " " << counter << "comparisons"<<endl;
+    cout << "RandSelection: " << p.getId() << " " << p.getName() << " " << counter << " " << "comparisons" << endl;
+    counter = 0;
     p = selectHeap(people, size, moked, counter);
-    cout << "selectHeap: " << p.getId() << " " << p.getName() << " " << counter << "comparisons"<<endl;
+    cout << "selectHeap: " << p.getId() << " " << p.getName() << " " << counter << " " << "comparisons" << endl;
+    counter = 0;
     p = BST(people, size, moked, counter);
-    cout << "BST: " << p.getId() << " " << p.getName() << " " << counter << "comparisons"<<endl;
+    cout << "BST: " << p.getId() << " " << p.getName() << " " << counter << " " << "comparisons" << endl;
 
     //TODO:
 
